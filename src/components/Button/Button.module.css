@@ -1,0 +1,19 @@
+.button {
+  font-size: 15px;
+  font-family: "Roboto", sans-serif;
+  background-color: lightskyblue;
+  border: 3px lightskyblue solid;
+  border-radius: 3px;
+  color: white;
+}
+
+.button:disabled,
+.button:disabled:hover {
+  background-color: grey;
+  border-color: grey;
+}
+
+.button:hover {
+  border-color: #0858ec;
+  background-color: #0858ec;
+}

@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Counter from "./Counter";
+import App from "./App";
 
 ReactDOM.render(
-    <Counter/>, document.getElementById('root')
+    <App/>, document.getElementById('root')
 );
 // В типе UserPropsType у функции deleteUser в параметрах указан тип "any".
 // Какой тип было бы указать правильнее?
