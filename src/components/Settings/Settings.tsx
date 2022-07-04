@@ -12,6 +12,7 @@ type SettingPropsType = {
     setCount: (value: number) => void
     settingsError: boolean
     setSettingsError: (value: boolean) => void
+    saveLocalStorage: () => void
 }
 
 
@@ -22,6 +23,7 @@ const Settings: FC<SettingPropsType> = (props) => {
         props.setStartValue(props.startValue)
         props.setCount(props.startValue)
         props.setEnterValues(false)
+        props.saveLocalStorage()
     }
 
     const maxValueInputHandler = (e: ChangeEvent<HTMLInputElement>) => {

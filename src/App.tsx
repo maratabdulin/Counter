@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Counter from "./components/Counter/Counter";
 import s from './App.module.css'
 import Settings from "./components/Settings/Settings";
+import {restoreState, saveState} from "./localStorage/localStorage";
 
 type StateType = {
     maxValue: number
@@ -9,12 +10,16 @@ type StateType = {
 }
 
 const App = () => {
-
-    const [maxValue, setMaxValue] = useState<number>(5);
-    const [startValue, setStartValue] = useState<number>(1);
+    const newValue = restoreState<StateType>('counter-value', {maxValue: 5, startValue: 0})
+    const [maxValue, setMaxValue] = useState<number>(newValue?.maxValue ? newValue.maxValue : 5 );
+    const [startValue, setStartValue] = useState<number>(newValue?.startValue ? newValue.startValue : 0);
     const [count, setCount] = useState<number>(startValue);
     const [enterValues, setEnterValues] = useState<boolean>(false);
     const [settingsError, setSettingsError] = useState<boolean>(false);
+
+    const saveLocalStorage = () => {
+        saveState<StateType>('counter-value', {maxValue, startValue})
+    }
 
     return (
         <div className={s.container}>
@@ -27,6 +32,7 @@ const App = () => {
                 settingsError={settingsError}
                 setSettingsError={setSettingsError}
                 setEnterValues={setEnterValues}
+                saveLocalStorage={saveLocalStorage}
             />
             <Counter
                 maxValue={maxValue}
