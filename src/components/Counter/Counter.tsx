@@ -14,10 +14,17 @@ type CounterType = {
 const Counter: FC<CounterType> = (props) => {
     const onClickIncrement = () => props.setCount(props.count + 1)
     const onClickReset = () => props.setCount(props.startValue);
-    let counterClassName = !props.enterValues && props.count === props.maxValue ? [s.counter, s.counterError].join(' ') : s.counter;
+    let counterClassName = s.counter;
+    if (!props.enterValues && props.count === props.maxValue) {
+        counterClassName = [s.counter, s.counterErrorMaxValue].join(' ')
+    };
+    if (props.enterValues) {
+        counterClassName = [s.counter, s.counterEnterValues].join(' ')
+    };
     if (props.settingsError) {
-        counterClassName = [s.counter, s.counterError].join(' ')
-    }
+        counterClassName = [s.counter, s.counterErrorSettings].join(' ')
+    };
+
     let counterMessage = props.settingsError ? 'Incorrect Value' : 'Enter values and press "set"'
 
     return (

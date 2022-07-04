@@ -9,6 +9,7 @@
 
 .inputs {
   display: flex;
+  flex-grow: 2;
   gap: 15px;
   flex-direction: column;
   box-sizing: border-box;

@@ -24,10 +24,20 @@
   color: white;
 }
 
-.counterError {
+.counterErrorMaxValue {
   position: relative;
   font-weight: bold;
   color: red;
+}
+
+.counterEnterValues {
+  font-size: 15px;
+  color: white;
+}
+
+.counterErrorSettings {
+  color: red;
+  font-size: 15px;
 }
 
 .buttonsWrapper {
