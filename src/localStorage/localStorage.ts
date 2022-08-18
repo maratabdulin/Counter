@@ -1,4 +1,5 @@
 export function saveState<T>(key: string, state: T) {
+    localStorage.clear();
     const stateAsString = JSON.stringify(state);
     localStorage.setItem(key, stateAsString);
 }
