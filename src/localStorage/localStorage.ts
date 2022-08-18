@@ -1,14 +1,21 @@
-export function saveState<T>(key: string, state: T) {
-    localStorage.clear();
-    const stateAsString = JSON.stringify(state);
-    localStorage.setItem(key, stateAsString);
+const KEY = "redux";
+
+export function loadState() {
+    try {
+        const serializedState = localStorage.getItem(KEY);
+        if (!serializedState) return undefined;
+        return JSON.parse(serializedState);
+    } catch (e) {
+        return undefined;
+    }
 }
 
-export function restoreState<T>(key: string, defaultState: T) {
-    let state = defaultState;
-    const stateAsString = localStorage.getItem(key)
-    if (stateAsString !== null) {
-        state = JSON.parse(stateAsString) as T
-        return state
+export async function saveState(state: any) {
+    try {
+        localStorage.clear()
+        const serializedState = JSON.stringify(state);
+        localStorage.setItem(KEY, serializedState);
+    } catch (e) {
+        // Ignore
     }
 }

@@ -1,85 +1,95 @@
-type CounterStateType = {
+export type CounterStateType = {
     maxValue: number
     startValue: number
     currentValue: number
-    enterValues: boolean
-    settingsError: boolean
+    settingMode: boolean
+    settingError: boolean
 }
 
 let initialState: CounterStateType = {
     maxValue: 5,
     startValue: 0,
     currentValue: 0,
-    enterValues: true,
-    settingsError: false
+    settingMode: false,
+    settingError: false
 }
 
-type IncrementValueActionType = ReturnType<typeof incrementValueAC>
 type SetMaxValueActionType = ReturnType<typeof setMaxValueAC>
 type SetStartValueActionType = ReturnType<typeof setStartValueAC>
-type SetCurrentValueActionType = ReturnType<typeof setEnterValuesModeAC>
-type SetErrorActionType = ReturnType<typeof setSettingsErrorModeAC>
 type SetValueActionType = ReturnType<typeof setValueAC>
+type SetCounterActionType = ReturnType<typeof setCounterAC>
+type ChangeModeActionType = ReturnType<typeof changeModeCounterAC>
 
-type ActionType = IncrementValueActionType | SetMaxValueActionType | SetStartValueActionType
-    | SetCurrentValueActionType | SetErrorActionType | SetValueActionType
+type ActionType = SetMaxValueActionType | SetStartValueActionType | SetValueActionType | SetCounterActionType | ChangeModeActionType
 
 export const counterReducer = (state: CounterStateType = initialState, action: ActionType) => {
     switch (action.type) {
-        case 'INCREMENT_VALUE':
-            return {...state, currentValue: state.currentValue + 1}
         case 'SET_VALUE':
             return {...state, currentValue: action.newValue}
         case 'SET_MAX_VALUE':
-            return {...state, maxValue: action.maxValue}
+            return {
+                ...state,
+                maxValue: action.maxValue,
+                settingError: action.settingError,
+                settingMode: true,
+            }
         case 'SET_START_VALUE':
-            return {...state, startValue: action.startValue}
-        case 'SET_ENTER_VALUE_MODE':
-            return {...state, enterValues: action.valuesMode}
-        case 'SET_SETTINGS_ERROR_MODE':
-            return {...state, settingsError: action.settingsError}
+            return {
+                ...state,
+                startValue: action.startValue,
+                settingError: action.settingError,
+                settingMode: true,
+            }
+        case 'SET_COUNTER':
+            return {
+                ...state,
+                startValue: action.value,
+                currentValue: action.value,
+                maxValue: action.maxValue,
+                settingMode: false
+            }
+            case 'CHANGE_MODE_COUNTER':
+                return {
+                    ...state, settingMode: true
+                }
         default:
             return state
     }
 }
 
-export const incrementValueAC = () => {
-    return {
-        type: 'INCREMENT_VALUE'
-    } as const
-}
-
-export const setValueAC = (newValue:number) => {
+export const setValueAC = (newValue: number) => {
     return {
         type: 'SET_VALUE',
         newValue
     } as const
 }
 
-export const setMaxValueAC = (maxValue: number) => {
+export const setMaxValueAC = (maxValue: number, settingError: boolean) => {
     return {
         type: 'SET_MAX_VALUE',
-        maxValue
+        maxValue,
+        settingError
     } as const
 }
 
-export const setStartValueAC = (startValue: number) => {
+export const setStartValueAC = (startValue: number, settingError: boolean) => {
     return {
         type: 'SET_START_VALUE',
-        startValue
+        startValue,
+        settingError
     } as const
 }
 
-export const setEnterValuesModeAC = (valuesMode: boolean) => {
+export const setCounterAC = (maxValue: number, value: number) => {
     return {
-        type: 'SET_ENTER_VALUE_MODE',
-        valuesMode
+        type: 'SET_COUNTER',
+        maxValue,
+        value,
     } as const
 }
 
-export const setSettingsErrorModeAC = (settingsError: boolean) => {
+export const changeModeCounterAC = () => {
     return {
-        type: 'SET_SETTINGS_ERROR_MODE',
-        settingsError
+        type: 'CHANGE_MODE_COUNTER',
     } as const
 }

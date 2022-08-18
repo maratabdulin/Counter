@@ -1,83 +1,57 @@
 import React, {ChangeEvent, FC} from 'react';
 import s from './Settings.module.css'
-import Button from "../Button/Button";
-import Input from "../Input/Input";
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../../redux/store';
 import {
-    setEnterValuesModeAC,
+    setCounterAC,
     setMaxValueAC,
-    setSettingsErrorModeAC,
-    setStartValueAC, setValueAC
+    setStartValueAC
 } from '../../redux/counter-reducer';
 
 type SettingPropsType = {
-    // setMaxValue: (value: number) => void
-    // setStartValue: (value: number) => void
-    // setEnterValues: (value: boolean) => void
-    // maxValue: number
-    // startValue: number
-    // setCount: (value: number) => void
-    // settingsError: boolean
-    // setSettingsError: (value: boolean) => void
-    // saveLocalStorage: () => void
+    maxValue: number
+    startValue: number
 }
 
+const Settings: FC<SettingPropsType> = ({maxValue, startValue}) => {
 
-const Settings: FC<SettingPropsType> = (props) => {
     const dispatch = useDispatch();
-    const maxValue = useSelector<AppRootStateType, number>(state => state.counter.maxValue)
-    const startValue = useSelector<AppRootStateType, number>(state => state.counter.startValue)
-    const settingsError = useSelector<AppRootStateType, boolean>(state => state.counter.settingsError)
+    const settingError = useSelector<AppRootStateType, boolean>(state => state.counter.settingError)
 
-    const settingHandler = () => {
-        dispatch(setMaxValueAC(maxValue))
-        // props.setMaxValue(maxValue);
-        dispatch(setStartValueAC(startValue))
-        // props.setStartValue(startValue)
-        dispatch(setValueAC(startValue))
-        // props.setCount(startValue)
-        dispatch(setEnterValuesModeAC(false))
-        // props.setEnterValues(false)
-
-        // props.saveLocalStorage()
-    }
+    const settingHandler = () => dispatch(setCounterAC(maxValue, startValue))
 
     const maxValueInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setSettingsErrorModeAC(+e.currentTarget.value < 0 || startValue < 0 || +e.currentTarget.value <= startValue ))
-        // props.setSettingsError(+e.currentTarget.value < 0 || startValue < 0 || +e.currentTarget.value <= startValue )
-        dispatch(setMaxValueAC(+e.currentTarget.value))
-        // props.setMaxValue(+e.currentTarget.value)
-        dispatch(setEnterValuesModeAC(true))
-        // props.setEnterValues(true)
+        const value = +e.currentTarget.value;
+        const isError: boolean = value < 0 || startValue < 0 || value <= startValue
+        dispatch(setMaxValueAC(value, isError))
     }
     const startValueInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setSettingsErrorModeAC(+e.currentTarget.value < 0 || maxValue < 0 || +e.currentTarget.value >= maxValue ))
-        // props.setSettingsError(+e.currentTarget.value < 0 || maxValue < 0 || +e.currentTarget.value >= maxValue )
-        dispatch(setStartValueAC(+e.currentTarget.value))
-        // props.setStartValue(+e.currentTarget.value)
-        dispatch(setEnterValuesModeAC(true))
-        // props.setEnterprops.setEnterValues(true)
+        const value = +e.currentTarget.value;
+        const isError: boolean = value < 0 || maxValue < 0 || value >= maxValue
+        dispatch(setStartValueAC(value, isError))
     }
 
     return (
         <div className={s.wrapper}>
             <div className={s.inputs}>
                 <Input
-                    labelTitle={'max-value: '}
+                    labelTitle={'max value: '}
                     value={maxValue}
                     onChange={maxValueInputHandler}
-                    error={settingsError}
+                    error={settingError}
                 />
                 <Input
-                    labelTitle={'start-value: '}
+                    labelTitle={'start value: '}
                     value={startValue}
                     onChange={startValueInputHandler}
-                    error={settingsError}
+                    error={settingError}
                 />
             </div>
             <div className={s.buttonsWrapper}>
-                <Button onClick={settingHandler} buttonDisabled={settingsError}> SET </Button>
+                {settingError && <span className={s.errorMessage}>Incorrect value</span>}
+                <Button onClick={settingHandler} buttonDisabled={settingError}> SET </Button>
             </div>
         </div>
     );

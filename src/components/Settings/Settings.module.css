@@ -9,6 +9,7 @@
 
 .inputs {
   display: flex;
+  flex-wrap: wrap;
   flex-grow: 2;
   gap: 15px;
   flex-direction: column;
@@ -26,10 +27,20 @@
 
 .buttonsWrapper {
   justify-content: center;
+  position: relative;
   display: flex;
   flex-direction: row;
   border: 3px lightskyblue solid;
   border-radius: 5px;
   padding: 10px;
   gap: 10px;
+}
+
+.errorMessage {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  color: red;
+  transform: translateY(-50%);
+  font-family: "Roboto", sans-serif;
 }
