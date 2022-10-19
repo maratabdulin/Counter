@@ -1,6 +1,8 @@
+import {AppRootStateType} from '../redux/store';
+
 const KEY = "redux";
 
-export function loadState() {
+export const loadState = () => {
     try {
         const serializedState = localStorage.getItem(KEY);
         if (!serializedState) return undefined;
@@ -8,14 +10,14 @@ export function loadState() {
     } catch (e) {
         return undefined;
     }
-}
+};
 
-export async function saveState(state: any) {
+export const saveState = (state: AppRootStateType) => {
     try {
         localStorage.clear()
         const serializedState = JSON.stringify(state);
         localStorage.setItem(KEY, serializedState);
     } catch (e) {
-        // Ignore
+
     }
-}
+};
